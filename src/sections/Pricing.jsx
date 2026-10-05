@@ -189,7 +189,7 @@ export default function Pricing() {
                   <Button
                     variant="violet"
                     size="lg"
-                    href="#contact"
+                    href="/contact"
                     className="w-full"
                     glowing
                   >
@@ -238,7 +238,7 @@ export default function Pricing() {
                   <Button
                     variant="dark"
                     size="md"
-                    href="#contact"
+                    href="/contact"
                     className="w-full"
                   >
                     Select {plan.name}

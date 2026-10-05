@@ -107,7 +107,7 @@ export default function Hero({ onOpenQuote }) {
               transition={{ duration: 0.5, delay: 0.45 }}
               className="mt-8 flex flex-wrap items-center gap-4 justify-center lg:justify-start"
             >
-              <Button variant="primary" size="lg" href="#contact" glowing>
+              <Button variant="primary" size="lg" href="/contact" glowing>
                 Book a Free Call
               </Button>
 
@@ -120,7 +120,7 @@ export default function Hero({ onOpenQuote }) {
                 Get a Free Quote
               </button>
 
-              <Button variant="ghost" size="lg" href="#services">
+              <Button variant="ghost" size="lg" href="/services">
                 <Play className="w-4 h-4 fill-current text-violet-400" />
                 Explore Services
               </Button>

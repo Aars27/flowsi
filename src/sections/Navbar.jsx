@@ -1,35 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, FileText, Sparkles } from 'lucide-react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Menu, X, FileText, ChevronDown } from 'lucide-react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import Button from '../components/Button'
+import { servicesData } from '../data/servicesData'
 
 const navLinks = [
-  { label: 'Services', href: '#services' },
-  { label: 'Solutions', href: '#how-it-works' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services', hasDropdown: true },
+  { label: 'Industries', href: '/industries' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export default function Navbar({ onOpenQuote }) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const navigate = useNavigate()
+  const [dropdownOpen, setDropdownOpen] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleNavClick = (e, href) => {
-    if (location.pathname !== '/') {
-      e.preventDefault()
-      navigate('/' + href)
-    }
-  }
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false)
+    setDropdownOpen(false)
+  }, [location.pathname])
+
+  const getNavLinkClass = ({ isActive }) => 
+    `text-sm font-medium transition-colors duration-200 flex items-center gap-1 ${
+      isActive ? 'text-violet-400' : 'text-gray-300 hover:text-white'
+    }`
 
   return (
     <motion.nav
@@ -59,14 +65,46 @@ export default function Navbar({ onOpenQuote }) {
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
-                className="text-sm text-gray-300 hover:text-white transition-colors duration-200 font-medium"
-              >
-                {link.label}
-              </a>
+              link.hasDropdown ? (
+                <div 
+                  key={link.label} 
+                  className="relative group"
+                  onMouseEnter={() => setDropdownOpen(true)}
+                  onMouseLeave={() => setDropdownOpen(false)}
+                >
+                  <NavLink to={link.href} className={getNavLinkClass}>
+                    {link.label}
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
+                  </NavLink>
+                  
+                  {/* Dropdown Menu */}
+                  <AnimatePresence>
+                    {dropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full left-0 mt-2 w-64 bg-dark border border-white/10 rounded-xl shadow-2xl overflow-hidden py-2"
+                      >
+                        {servicesData.map((service) => (
+                          <Link 
+                            key={service.slug} 
+                            to={`/services/${service.slug}`}
+                            className="block px-4 py-2.5 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                          >
+                            {service.title}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <NavLink key={link.label} to={link.href} className={getNavLinkClass}>
+                  {link.label}
+                </NavLink>
+              )
             ))}
           </div>
 
@@ -81,7 +119,7 @@ export default function Navbar({ onOpenQuote }) {
               Get a Quote
             </button>
 
-            <Button variant="violet" size="sm" href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>
+            <Button variant="violet" size="sm" href="/contact">
               Get Started
             </Button>
           </div>
@@ -109,20 +147,30 @@ export default function Navbar({ onOpenQuote }) {
           >
             <div className="px-4 py-6 space-y-4">
               {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={(e) => {
-                    handleNavClick(e, link.href)
-                    setMobileOpen(false)
-                  }}
-                  className="block text-gray-200 hover:text-white font-medium text-base py-2 min-h-[44px] flex items-center transition-colors border-b border-white/5"
-                >
-                  {link.label}
-                </a>
+                <div key={link.label}>
+                  <NavLink
+                    to={link.href}
+                    className={({ isActive }) => `flex items-center justify-between text-base py-2 min-h-[44px] border-b border-white/5 transition-colors font-medium ${isActive ? 'text-violet-400' : 'text-gray-200 hover:text-white'}`}
+                  >
+                    {link.label}
+                  </NavLink>
+                  {link.hasDropdown && (
+                    <div className="pl-4 border-l border-white/10 ml-2 mt-2 space-y-2">
+                      {servicesData.map((service) => (
+                        <NavLink
+                          key={service.slug}
+                          to={`/services/${service.slug}`}
+                          className={({ isActive }) => `block py-2 text-sm transition-colors ${isActive ? 'text-violet-400' : 'text-gray-400 hover:text-white'}`}
+                        >
+                          {service.title}
+                        </NavLink>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
 
-              <div className="pt-2 flex flex-col gap-3">
+              <div className="pt-4 flex flex-col gap-3">
                 <button
                   type="button"
                   onClick={() => {
@@ -138,12 +186,8 @@ export default function Navbar({ onOpenQuote }) {
                 <Button
                   variant="primary"
                   size="sm"
-                  href="#contact"
+                  href="/contact"
                   className="w-full min-h-[44px]"
-                  onClick={(e) => {
-                    handleNavClick(e, '#contact')
-                    setMobileOpen(false)
-                  }}
                 >
                   Get Started
                 </Button>

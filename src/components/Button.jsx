@@ -1,6 +1,10 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
+
+const MotionLink = motion(Link)
+const MotionButton = motion.button
 
 export default function Button({
   children,
@@ -29,39 +33,65 @@ export default function Button({
     lg: 'px-9 py-4 text-base',
   }
 
-  const MotionComponent = href ? motion.a : motion.button
+  const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`
 
   if (glowing) {
     return (
       <div className="glowing-btn-wrapper">
-        <MotionComponent
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-          className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`}
-          onClick={onClick}
-          href={href}
-          {...props}
-        >
-          {children}
-          {icon && <ArrowRight className="w-4 h-4" />}
-        </MotionComponent>
+        {href ? (
+          <MotionLink
+            to={href}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            className={classes}
+            onClick={onClick}
+            {...props}
+          >
+            {children}
+            {icon && <ArrowRight className="w-4 h-4" />}
+          </MotionLink>
+        ) : (
+          <MotionButton
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            className={classes}
+            onClick={onClick}
+            {...props}
+          >
+            {children}
+            {icon && <ArrowRight className="w-4 h-4" />}
+          </MotionButton>
+        )}
       </div>
     )
   }
 
-  const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`
+  if (href) {
+    return (
+      <MotionLink
+        to={href}
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.98 }}
+        className={classes}
+        onClick={onClick}
+        {...props}
+      >
+        {children}
+        {icon && <ArrowRight className="w-4 h-4" />}
+      </MotionLink>
+    )
+  }
 
   return (
-    <MotionComponent
+    <MotionButton
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
       className={classes}
       onClick={onClick}
-      href={href}
       {...props}
     >
       {children}
       {icon && <ArrowRight className="w-4 h-4" />}
-    </MotionComponent>
+    </MotionButton>
   )
 }

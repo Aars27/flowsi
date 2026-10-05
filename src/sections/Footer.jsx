@@ -1,5 +1,6 @@
 import React from 'react'
 import { ArrowUp, FileText } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import {
   InstagramIcon,
   FacebookIcon,
@@ -7,25 +8,15 @@ import {
   TwitterIcon,
 } from '../components/BrandIcons'
 import { CONTACT_CONFIG } from '../config/contact'
+import { servicesData } from '../data/servicesData'
 
 const quickLinks = [
-  { label: 'Home', href: '#hero' },
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Get a Quote', href: '#quote' },
-  { label: 'Contact', href: '#contact' },
-]
-
-const serviceLinks = [
-  'AI Automation & Calling Bots',
-  'Booking Agents (24/7)',
-  'Google Reviews via QR',
-  'Video Ads & Promo Videos',
-  'Website Development',
-  'SEO, SMO & LLM SEO',
-  'Marketing Automation',
-  'AI Maintenance & Upgrades',
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Get a Quote', href: '/quote' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 const socials = [
@@ -45,7 +36,7 @@ export default function Footer({ onOpenQuote }) {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <a href="#" className="flex items-center gap-2 mb-4">
+            <Link to="/" className="flex items-center gap-2 mb-4">
               <svg width="28" height="28" viewBox="0 0 32 32">
                 <defs>
                   <linearGradient id="footer-logo" x1="0" y1="0" x2="1" y2="1">
@@ -56,7 +47,7 @@ export default function Footer({ onOpenQuote }) {
                 <path d="M4 12 Q12 4 20 12 Q16 18 12 14 Q8 10 4 16 Q8 22 12 18 Q16 14 24 22 Q28 26 28 20" stroke="url(#footer-logo)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
               </svg>
               <span className="text-lg font-bold text-white">Flowsi</span>
-            </a>
+            </Link>
             <p className="text-sm text-gray-400 leading-relaxed mb-4 max-w-xs">
               AI Automation & Digital Services Agency based in Bristol, UK.
               Helping local businesses simplify, automate, and scale.
@@ -93,9 +84,9 @@ export default function Footer({ onOpenQuote }) {
                       Get a Free Quote
                     </button>
                   ) : (
-                    <a href={link.href} className="text-sm text-gray-400 hover:text-violet-400 transition-colors">
+                    <Link to={link.href} className="text-sm text-gray-400 hover:text-violet-400 transition-colors">
                       {link.label}
-                    </a>
+                    </Link>
                   )}
                 </li>
               ))}
@@ -106,11 +97,11 @@ export default function Footer({ onOpenQuote }) {
           <div>
             <h4 className="text-white font-semibold text-sm mb-4">Services</h4>
             <ul className="space-y-2.5">
-              {serviceLinks.map((s) => (
-                <li key={s}>
-                  <a href="#services" className="text-sm text-gray-400 hover:text-violet-400 transition-colors">
-                    {s}
-                  </a>
+              {servicesData.map((s) => (
+                <li key={s.slug}>
+                  <Link to={`/services/${s.slug}`} className="text-sm text-gray-400 hover:text-violet-400 transition-colors">
+                    {s.title}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -120,9 +111,9 @@ export default function Footer({ onOpenQuote }) {
           <div>
             <h4 className="text-white font-semibold text-sm mb-4">Legal</h4>
             <ul className="space-y-2.5">
-              <li><a href="#" className="text-sm text-gray-400 hover:text-violet-400 transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="text-sm text-gray-400 hover:text-violet-400 transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="text-sm text-gray-400 hover:text-violet-400 transition-colors">Cookie Policy</a></li>
+              <li><Link to="/privacy" className="text-sm text-gray-400 hover:text-violet-400 transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-sm text-gray-400 hover:text-violet-400 transition-colors">Terms of Service</Link></li>
+              <li><Link to="/cookies" className="text-sm text-gray-400 hover:text-violet-400 transition-colors">Cookie Policy</Link></li>
             </ul>
           </div>
         </div>

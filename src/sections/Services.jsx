@@ -41,7 +41,12 @@ const itemVariants = {
   },
 }
 
-export default function Services({ onOpenQuote }) {
+import { Link } from 'react-router-dom'
+import Button from '../components/Button'
+
+export default function Services({ onOpenQuote, preview = false }) {
+  // If preview is true, limit to the first 6 cards
+  const showCount = preview ? 6 : 9;
   return (
     <section id="services" className="py-24 lg:py-32 bg-white relative overflow-hidden">
       <div className="absolute inset-0 dot-pattern-light opacity-40 pointer-events-none" />
@@ -310,44 +315,46 @@ export default function Services({ onOpenQuote }) {
             </SpotlightCard>
           </motion.div>
 
-          {/* NEW 9TH SERVICE CARD: Video Ads & Promo Videos (Spans 1 col or stands out with vibrant styling) */}
-          <motion.div variants={itemVariants} className="lg:col-span-1">
-            <SpotlightCard
-              spotlightColor="rgba(244, 63, 94, 0.25)"
-              className="p-8 border border-rose-100 shadow-xl"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <IconTile
-                  icon={Clapperboard}
-                  gradient="from-rose-500 via-pink-500 to-violet-600"
-                />
-                <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-rose-500" />
-                  New Service
-                </span>
-              </div>
+          {showCount > 6 && (
+            <motion.div variants={itemVariants} className="lg:col-span-1">
+              <SpotlightCard
+                spotlightColor="rgba(244, 63, 94, 0.25)"
+                className="p-8 border border-rose-100 shadow-xl"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <IconTile
+                    icon={Clapperboard}
+                    gradient="from-rose-500 via-pink-500 to-violet-600"
+                  />
+                  <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-rose-500" />
+                    New Service
+                  </span>
+                </div>
 
-              <h3 className="text-xl font-bold text-dark mb-2">Video Ads & Promo Videos</h3>
-              <p className="text-sm text-gray-500 leading-relaxed mb-6">
-                Short-form reels, social media ads, promo videos and product/service explainer videos for Instagram, Facebook, YouTube and TikTok, with scripting, editing, subtitles and AI-assisted production.
-              </p>
+                <h3 className="text-xl font-bold text-dark mb-2">Video Ads & Promo Videos</h3>
+                <p className="text-sm text-gray-500 leading-relaxed mb-6">
+                  Short-form reels, social media ads, promo videos and product/service explainer videos for Instagram, Facebook, YouTube and TikTok, with scripting, editing, subtitles and AI-assisted production.
+                </p>
 
-              <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                <span className="text-xs text-gray-400 font-medium">Reels, TikTok & Shorts</span>
-                <button
-                  onClick={onOpenQuote}
-                  type="button"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-violet-600 hover:text-violet-700 group cursor-pointer"
-                >
-                  Request Video Ad
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </SpotlightCard>
-          </motion.div>
+                <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
+                  <span className="text-xs text-gray-400 font-medium">Reels, TikTok & Shorts</span>
+                  <button
+                    onClick={onOpenQuote}
+                    type="button"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-violet-600 hover:text-violet-700 group cursor-pointer"
+                  >
+                    Request Video Ad
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </SpotlightCard>
+            </motion.div>
+          )}
 
           {/* Card 8 & 9: LARGE WIDE FEATURE (Spans 2 cols on lg) - Continuous AI Upgrades & Virtual Assistance */}
-          <motion.div variants={itemVariants} className="lg:col-span-2">
+          {showCount > 6 && (
+            <motion.div variants={itemVariants} className="lg:col-span-2">
             <SpotlightCard
               spotlightColor="rgba(59, 130, 246, 0.22)"
               className="p-8 lg:p-10 border border-blue-100 shadow-xl"
@@ -407,7 +414,16 @@ export default function Services({ onOpenQuote }) {
               </div>
             </SpotlightCard>
           </motion.div>
+          )}
         </motion.div>
+
+        {preview && (
+          <div className="mt-12 text-center">
+            <Button variant="dark" size="lg" href="/services">
+              View All Services
+            </Button>
+          </div>
+        )}
 
         {/* NEW "Our Video Work" Showcase Strip */}
         <VideoWorkShowcase onOpenQuote={onOpenQuote} />

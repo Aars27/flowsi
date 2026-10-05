@@ -45,12 +45,12 @@ export default function CTABanner({ onOpenQuote }) {
               Get a Free Quote
             </button>
 
-            <Button variant="violet" size="lg" href="#contact">
+            <Button variant="violet" size="lg" href="/contact">
               Book a Free Call
               <ArrowRight className="w-4 h-4" />
             </Button>
 
-            <Button variant="ghost" size="lg" href="#pricing">
+            <Button variant="ghost" size="lg" href="/pricing">
               View Pricing
             </Button>
           </div>
